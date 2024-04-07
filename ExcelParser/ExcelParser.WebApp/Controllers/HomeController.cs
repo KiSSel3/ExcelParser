@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using ExcelParser.Parser.Models;
 using Microsoft.AspNetCore.Mvc;
 using ExcelParser.WebApp.Models;
 
@@ -33,7 +34,6 @@ public class HomeController : Controller
     {
         if (file == null || file.Length == 0)
             return Content("File not selected");
-
         var filePath = Path.GetTempFileName();
 
         using (var stream = new FileStream(filePath, FileMode.Create))
@@ -41,8 +41,14 @@ public class HomeController : Controller
             await file.CopyToAsync(stream);
         }
 
+        Parser.Parser parser = new Parser.Parser(filePath, 9);
+        var buildingData =  parser.GetTableRows("Строительство ", 4);
+        var consumerLoansData =  parser.GetTableRows("Потребительские кредиты ", 4);
+        var paymentCardsAndOverdraftData =  parser.GetTableRows("Платежные карты и Овердрафт ", 5);
+        var carLoansData =  parser.GetTableRows("Автокредитование ", 4);
+        
         // Обработка загруженного файла
 
-        return View("Error", new ErrorViewModel());
+        return View("Word",filePath);
     }
 }
