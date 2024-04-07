@@ -8,27 +8,30 @@ namespace ExcelParser.WebApp.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly Dictionary<string, int> _rellevantLineInTables=new Dictionary<string, int>();
 
     public HomeController(ILogger<HomeController> logger)
     {
-        _logger = logger;
+        _rellevantLineInTables["Строительство "]=4;
+        _rellevantLineInTables["Потребительские кредиты "] = 4;
+        _rellevantLineInTables["Платежные карты и Овердрафт "] = 5;
+        _rellevantLineInTables["Автокредитование "] = 4;
     }
 
-    private List<TableRow> GetTableRowsByTableName(string tableName,string filePath,int firstRelevantLine)
+    private TableRowViewModel GetTableRowsByTableName(string tableName,string filePath,int firstRelevantLine)
     {
         Parser.Parser parser = new Parser.Parser(filePath, 9);
         var data = parser.GetTableRows(tableName, firstRelevantLine);
-        return data;
+        return new TableRowViewModel(){TableRows = data,FilePath = filePath};
     }
 
-    private IActionResult CheckForDataValid(List<TableRow> data)
+    private IActionResult CheckForDataValid(TableRowViewModel dataModel)
     {
-        if (data==null)
+        if (dataModel.TableRows==null)
         {
             return View("Error", new ErrorViewModel() { RequestId = "Данных нет" });
         }
-        return View("Table", data);
+        return View("Table", dataModel);
     }
     public IActionResult Index()
     {
@@ -56,27 +59,60 @@ public class HomeController : Controller
     public async Task<IActionResult> GetBuildingTable(string filePath)
     {
         var buildingData = GetTableRowsByTableName("Строительство ",filePath,4);
-        ViewData["filePath"] = filePath;
+        ViewData["Title"] = "Строительство ";
         return CheckForDataValid(buildingData);
     }
     public async Task<IActionResult> GetConsumerLoansTable(string filePath)
     {
-        Parser.Parser parser = new Parser.Parser(filePath, 9);
-        var consumerLoansData =  parser.GetTableRows("Потребительские кредиты ", 4);
-        ViewData["filePath"] = filePath;
+        var consumerLoansData = GetTableRowsByTableName("Потребительские кредиты ", filePath, 4);
+        ViewData["Title"] = "Потребительские кредиты ";
         return CheckForDataValid(consumerLoansData);
     }
 
     public async Task<IActionResult> GetPaymentCardsAndOverdraftTable(string filePath)
     {
         var  paymentCardsAndOverdraftData = GetTableRowsByTableName("Платежные карты и Овердрафт ", filePath, 5);
-        ViewData["filePath"] = filePath;
+        ViewData["Title"] = "Платежные карты и Овердрафт ";
         return CheckForDataValid(paymentCardsAndOverdraftData);
     }
     public async Task<IActionResult> GetCarLoansTable(string filePath)
     {
         var carLoansData = GetTableRowsByTableName("Автокредитование ", filePath, 4);
-        ViewData["filePath"] = filePath;
+        ViewData["Title"] = "Автокредитование ";
         return CheckForDataValid(carLoansData);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> UpdateTable(string filePath, string tableName)
+    {
+        switch (tableName)
+        {
+            case "Автокредитование ":
+            {
+                var tableRows = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+                return View("EditTable", tableRows);
+            }
+            case "Платежные карты и Овердрафт ":
+            {
+                var tableRows = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+                return View("EditTable", tableRows);
+            }
+            case "Потребительские кредиты ":
+            {
+                var tableRows = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+                return View("EditTable", tableRows);
+            }
+            case "Строительство ":
+            {
+                var tableRows = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+                return View("EditTable", tableRows);
+            }
+        }
+        return View("Home", filePath);
+    }
+    [HttpPost]
+    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel)
+    {
+        return View("Home", tableRowViewModel.FilePath);
     }
 }
