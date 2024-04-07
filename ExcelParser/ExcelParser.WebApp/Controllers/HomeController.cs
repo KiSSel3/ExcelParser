@@ -10,7 +10,7 @@ public class HomeController : Controller
 {
     private readonly Dictionary<string, int> _rellevantLineInTables=new Dictionary<string, int>();
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController()
     {
         _rellevantLineInTables["Строительство "]=4;
         _rellevantLineInTables["Потребительские кредиты "] = 4;
@@ -58,27 +58,31 @@ public class HomeController : Controller
 
     public async Task<IActionResult> GetBuildingTable(string filePath)
     {
-        var buildingData = GetTableRowsByTableName("Строительство ",filePath,4);
-        ViewData["Title"] = "Строительство ";
+        var tableName = "Строительство ";
+        var buildingData = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+        ViewData["Title"] = tableName;
         return CheckForDataValid(buildingData);
     }
     public async Task<IActionResult> GetConsumerLoansTable(string filePath)
     {
-        var consumerLoansData = GetTableRowsByTableName("Потребительские кредиты ", filePath, 4);
-        ViewData["Title"] = "Потребительские кредиты ";
+        var tableName = "Потребительские кредиты ";
+        var consumerLoansData = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+        ViewData["Title"] = tableName;
         return CheckForDataValid(consumerLoansData);
     }
 
     public async Task<IActionResult> GetPaymentCardsAndOverdraftTable(string filePath)
     {
-        var  paymentCardsAndOverdraftData = GetTableRowsByTableName("Платежные карты и Овердрафт ", filePath, 5);
-        ViewData["Title"] = "Платежные карты и Овердрафт ";
+        var tableName = "Платежные карты и Овердрафт ";
+        var  paymentCardsAndOverdraftData = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+        ViewData["Title"] = tableName;
         return CheckForDataValid(paymentCardsAndOverdraftData);
     }
     public async Task<IActionResult> GetCarLoansTable(string filePath)
     {
-        var carLoansData = GetTableRowsByTableName("Автокредитование ", filePath, 4);
-        ViewData["Title"] = "Автокредитование ";
+        var tableName = "Автокредитование ";
+        var carLoansData = GetTableRowsByTableName(tableName,filePath,_rellevantLineInTables[tableName]);
+        ViewData["Title"] = tableName;
         return CheckForDataValid(carLoansData);
     }
 
