@@ -97,152 +97,215 @@ public class Parser
 
     private string? ParseId(int row, ExcelWorksheet worksheet)
     {
-        ExcelRange cell = worksheet.Cells[row, 1];
-
-        string? cellValue = cell.Value?.ToString();
-        if (cellValue is null)
+        try
         {
-            if (!cell.Merge)
+            ExcelRange cell = worksheet.Cells[row, 1];
+
+            string? cellValue = cell.Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
             {
-                return null;
+                if (!cell.Merge)
+                {
+                    return null;
+                }
+
+                _finishParsing = false;
+                return _lastId;
             }
 
+            _lastId = cellValue;
             _finishParsing = false;
-            return _lastId;
-        }
-
-        _lastId = cellValue;
-        _finishParsing = false;
         
-        return cellValue;
+            return cellValue;
+        }
+        catch
+        {
+            return null;
+        }
     }
     
     private string? ParseBankName(int row, ExcelWorksheet worksheet)
     {
-        ExcelRange cell = worksheet.Cells[row, 2];
-        
-        string? cellValue = cell.Value?.ToString();
-        if (cellValue is null)
+        try
         {
-            if (!cell.Merge)
+            ExcelRange cell = worksheet.Cells[row, 2];
+        
+            string? cellValue = cell.Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
             {
-                return null;
-            }
+                if (!cell.Merge)
+                {
+                    return null;
+                }
             
+                _finishParsing = false;
+                return _lastBankName;
+            }
+                    
+            _lastBankName = cellValue;
             _finishParsing = false;
+        
             return _lastBankName;
         }
-                    
-        _lastBankName = cellValue;
-        _finishParsing = false;
-        
-        return _lastBankName;
+        catch
+        {
+            return null;
+        }
     }
     
     private string? ParseCreditProduct(int row, ExcelWorksheet worksheet)
     {
-        ExcelRange cell = worksheet.Cells[row, 3];
-        
-        string? cellValue = cell.Value?.ToString();
-        if (cellValue is null)
+        try
         {
-            if (!cell.Merge)
+            ExcelRange cell = worksheet.Cells[row, 3];
+        
+            string? cellValue = cell.Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
             {
-                return null;
-            }
+                if (!cell.Merge)
+                {
+                    return null;
+                }
             
+                _finishParsing = false;
+                return _lastCreditProduct;
+            }
+        
+            _lastCreditProduct = cellValue;
             _finishParsing = false;
+        
             return _lastCreditProduct;
         }
-        
-        _lastCreditProduct = cellValue;
-        _finishParsing = false;
-        
-        return _lastCreditProduct;
+        catch
+        {
+            return null;
+        }
     }
 
     private int? ParseTermMin(int row, ExcelWorksheet worksheet)
     {
-        string? cellValue = worksheet.Cells[row, 4].Value?.ToString();
+        try
+        {
+            string? cellValue = worksheet.Cells[row, 4].Value?.ToString();
         
-        bool successfully = int.TryParse(cellValue, out int result);
-        if (!successfully)
+            bool successfully = int.TryParse(cellValue, out int result);
+            if (!successfully)
+            {
+                return null;
+            }
+        
+            _finishParsing = false;
+        
+            return result;
+        }
+        catch
         {
             return null;
         }
-        
-        _finishParsing = false;
-        
-        return result;
     }
     
     private int? ParseTermMax(int row, ExcelWorksheet worksheet)
     {
-        string? cellValue = worksheet.Cells[row, 5].Value?.ToString();
+        try
+        {
+            string? cellValue = worksheet.Cells[row, 5].Value?.ToString();
         
-        bool successfully = int.TryParse(cellValue, out int result);
-        if (!successfully)
+            bool successfully = int.TryParse(cellValue, out int result);
+            if (!successfully)
+            {
+                return null;
+            }
+        
+            _finishParsing = false;
+        
+            return result;
+        }
+        catch
         {
             return null;
         }
-        
-        _finishParsing = false;
-        
-        return result;
     }
 
     private string? ParsePeriod(int row, ExcelWorksheet worksheet)
     {
-        string? cellValue = worksheet.Cells[row, 6].Value?.ToString();
-        if (string.IsNullOrEmpty(cellValue))
+        try
+        {
+            string? cellValue = worksheet.Cells[row, 6].Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
+            {
+                return null;
+            }
+        
+            _finishParsing = false;
+        
+            return cellValue;
+        }
+        catch
         {
             return null;
         }
-        
-        _finishParsing = false;
-        
-        return cellValue;
     }
 
     private Rate? ParseRateMin(int row, ExcelWorksheet worksheet)
     {
-        string? cellValue = worksheet.Cells[row, 7].Value?.ToString();
-        if (string.IsNullOrEmpty(cellValue))
+        try
+        {
+            string? cellValue = worksheet.Cells[row, 7].Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
+            {
+                return null;
+            }
+        
+            _finishParsing = false;
+        
+            Rate rate = _rateСalculator.Сalculation(cellValue, GetDate(worksheet));
+            return rate;
+        }
+        catch
         {
             return null;
         }
-        
-        _finishParsing = false;
-        
-        Rate rate = _rateСalculator.Сalculation(cellValue, GetDate(worksheet));
-        return rate;
     }
     
     private Rate? ParseRateMax(int row, ExcelWorksheet worksheet)
     {
-        string? cellValue = worksheet.Cells[row, 8].Value?.ToString();
-        if (string.IsNullOrEmpty(cellValue))
+        try
+        {
+            string? cellValue = worksheet.Cells[row, 8].Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
+            {
+                return null;
+            }
+        
+            _finishParsing = false;
+        
+            Rate rate = _rateСalculator.Сalculation(cellValue, GetDate(worksheet));
+            return rate;
+        }
+        catch
         {
             return null;
         }
-        
-        _finishParsing = false;
-        
-        Rate rate = _rateСalculator.Сalculation(cellValue, GetDate(worksheet));
-        return rate;
     }
     
     private string? ParseNote(int row, ExcelWorksheet worksheet)
     {
-        string? cellValue = worksheet.Cells[row, 9].Value?.ToString();
-        if (string.IsNullOrEmpty(cellValue))
+        try
+        {
+            string? cellValue = worksheet.Cells[row, 9].Value?.ToString();
+            if (string.IsNullOrEmpty(cellValue))
+            {
+                return null;
+            }
+        
+            _finishParsing = false;
+        
+            return cellValue;
+        }
+        catch
         {
             return null;
         }
-        
-        _finishParsing = false;
-        
-        return cellValue;
     }
 
     private string? GetDate(ExcelWorksheet worksheet)
@@ -250,7 +313,7 @@ public class Parser
         for (int col = 1; col <= 9; ++col)
         {
             string? cellValue = worksheet.Cells[1, 1].Value?.ToString();
-            if (cellValue is not null)
+            if (!string.IsNullOrEmpty(cellValue))
             {
                 return cellValue;
             }
