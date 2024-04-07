@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Image and text -->
+<nav style="background-color: #1861ac">
+    <a style="color: #0dcaf0" class="navbar-brand" href="#">Web Excel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+<div align="center">
+    <h2>Выбирете файл</h2>
+    
+    <form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
+        <div class="input-group" style="text-align: center;">
+            <input type="file" id="fileInput" name="file" style="display: none;" />
+            <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" id="uploadButton" style="border: none; background-color: transparent; padding: 0;align-content: center">
+                    <img src="img/upload.jpg" alt="Upload" width="600" height="400" style="border: none; outline: none;align-self: center"/>
+                </button>
+            </span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Загрузить файл</button>
+    </form>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        document.getElementById("uploadButton").addEventListener("click", function () {
+            document.getElementById("fileInput").click();
+        });
+    </script>
+}

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelParser.Parser", "Excel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelParser.ConsoleApp", "ExcelParser.ConsoleApp\ExcelParser.ConsoleApp.csproj", "{7E793E31-8563-40C6-A027-2F0153B4ECF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelParser.WebApp", "ExcelParser.WebApp\ExcelParser.WebApp.csproj", "{ABDB65F8-1DA2-4674-8C78-7FCCAF9B2B3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{7E793E31-8563-40C6-A027-2F0153B4ECF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E793E31-8563-40C6-A027-2F0153B4ECF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E793E31-8563-40C6-A027-2F0153B4ECF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABDB65F8-1DA2-4674-8C78-7FCCAF9B2B3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABDB65F8-1DA2-4674-8C78-7FCCAF9B2B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABDB65F8-1DA2-4674-8C78-7FCCAF9B2B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABDB65F8-1DA2-4674-8C78-7FCCAF9B2B3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
