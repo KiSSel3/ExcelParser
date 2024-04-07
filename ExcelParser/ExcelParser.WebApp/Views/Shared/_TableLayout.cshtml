@@ -31,12 +31,6 @@
          <div class="row px-xl-5">
              <div class="col-lg-12 table-responsive mb-5">
                  @RenderBody()
-                
-                        <!-- Группировка записей по банкам -->
-                        @{
-                            string currentBankName=null;
-                        }
-                
                  @foreach (var tableRows in groupedRows)
                  {
                          <h3>Id : @tableRows[0].Id</h3>
@@ -76,7 +70,6 @@
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
