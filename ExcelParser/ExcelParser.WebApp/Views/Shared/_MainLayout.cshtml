@@ -1,12 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/site.css"> 
 </head>
 <nav style="background-color: #1861ac">
     <a style="color: #0dcaf0" class="navbar-brand" href="#">Web Excel</a>
@@ -15,6 +14,12 @@
     </button>
 </nav>
 <body>
+<div class="top-buttons">
+    <a href="@Url.Action("GetBuildingTable", "Home", new {filePath=Model})" class="top-button">Строительство</a>
+    <a href="@Url.Action("GetConsumerLoansTable", "Home", new {filePath=Model})" class="top-button">Потребительские кредиты</a>
+    <a href="@Url.Action("GetPaymentCardsAndOverdraftTable", "Home", new {filePath=Model})" class="top-button">Платежные карты и Овердрафт</a>
+    <a href="@Url.Action("GetCarLoansTable", "Home", new {filePath=Model})" class="top-button">Автокредитование</a>
+</div>
 <div class="container">
     <main role="main" class="pb-3">
         @RenderBody()

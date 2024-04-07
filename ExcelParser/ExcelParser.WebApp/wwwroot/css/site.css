@@ -20,3 +20,44 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.top-buttons {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 20px; /* Добавим небольшой отступ снизу */
+}
+
+.top-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  padding: 15px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.top-button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: white;
+}
+
+.top-button:first-child::before {
+  display: none; /* Убираем полосу перед первой кнопкой */
+}
+
+.top-button:hover {
+  background-color: #333;
+}

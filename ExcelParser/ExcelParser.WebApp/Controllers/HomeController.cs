@@ -14,41 +14,68 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    private List<TableRow> GetTableRowsByTableName(string tableName,string filePath,int firstRelevantLine)
+    {
+        Parser.Parser parser = new Parser.Parser(filePath, 9);
+        var data = parser.GetTableRows(tableName, firstRelevantLine);
+        return data;
+    }
+
+    private IActionResult CheckForDataValid(List<TableRow> data)
+    {
+        if (data==null)
+        {
+            return View("Error", new ErrorViewModel() { RequestId = "Данных нет" });
+        }
+        return View("Table", data);
+    }
     public IActionResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult Home(string filePath)
     {
-        return View();
+        return View("Home", filePath);
     }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+    
     [HttpPost]
     public async Task<IActionResult> Upload(IFormFile file)
     {
         if (file == null || file.Length == 0)
             return Content("File not selected");
         var filePath = Path.GetTempFileName();
-
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             await file.CopyToAsync(stream);
         }
+        return View("Home",filePath);
+    }
 
+    public async Task<IActionResult> GetBuildingTable(string filePath)
+    {
+        var buildingData = GetTableRowsByTableName("Строительство ",filePath,4);
+        ViewData["filePath"] = filePath;
+        return CheckForDataValid(buildingData);
+    }
+    public async Task<IActionResult> GetConsumerLoansTable(string filePath)
+    {
         Parser.Parser parser = new Parser.Parser(filePath, 9);
-        var buildingData =  parser.GetTableRows("Строительство ", 4);
         var consumerLoansData =  parser.GetTableRows("Потребительские кредиты ", 4);
-        var paymentCardsAndOverdraftData =  parser.GetTableRows("Платежные карты и Овердрафт ", 5);
-        var carLoansData =  parser.GetTableRows("Автокредитование ", 4);
-        
-        // Обработка загруженного файла
+        ViewData["filePath"] = filePath;
+        return CheckForDataValid(consumerLoansData);
+    }
 
-        return View("Word",filePath);
+    public async Task<IActionResult> GetPaymentCardsAndOverdraftTable(string filePath)
+    {
+        var  paymentCardsAndOverdraftData = GetTableRowsByTableName("Платежные карты и Овердрафт ", filePath, 5);
+        ViewData["filePath"] = filePath;
+        return CheckForDataValid(paymentCardsAndOverdraftData);
+    }
+    public async Task<IActionResult> GetCarLoansTable(string filePath)
+    {
+        var carLoansData = GetTableRowsByTableName("Автокредитование ", filePath, 4);
+        ViewData["filePath"] = filePath;
+        return CheckForDataValid(carLoansData);
     }
 }
