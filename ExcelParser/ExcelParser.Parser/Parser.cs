@@ -102,7 +102,7 @@ public class Parser
             ExcelRange cell = worksheet.Cells[row, 1];
 
             string? cellValue = cell.Value?.ToString();
-            if (cellValue is null)
+            if (string.IsNullOrEmpty(cellValue))
             {
                 if (!cell.Merge)
                 {
@@ -131,7 +131,7 @@ public class Parser
             ExcelRange cell = worksheet.Cells[row, 2];
         
             string? cellValue = cell.Value?.ToString();
-            if (cellValue is null)
+            if (string.IsNullOrEmpty(cellValue))
             {
                 if (!cell.Merge)
                 {
@@ -160,7 +160,7 @@ public class Parser
             ExcelRange cell = worksheet.Cells[row, 3];
         
             string? cellValue = cell.Value?.ToString();
-            if (cellValue is null)
+            if (string.IsNullOrEmpty(cellValue))
             {
                 if (!cell.Merge)
                 {
@@ -313,7 +313,7 @@ public class Parser
         for (int col = 1; col <= 9; ++col)
         {
             string? cellValue = worksheet.Cells[1, 1].Value?.ToString();
-            if (cellValue is not null)
+            if (!string.IsNullOrEmpty(cellValue))
             {
                 return cellValue;
             }
