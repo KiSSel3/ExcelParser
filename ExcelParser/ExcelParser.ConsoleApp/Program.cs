@@ -12,7 +12,7 @@ internal class Program
 {
     public static async Task Main(string[] args)
     {
-        string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
+        string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\КРЕДИТНЫЕ ПРОДУКТЫ.xlsx";
         
         // Проверяем существует ли файл
         if (!File.Exists(filePath))
@@ -20,7 +20,7 @@ internal class Program
             Console.WriteLine("Файл не найден.");
             return;
         }
-
+        
         Parser parser = new Parser(filePath, 9);
         
         Console.WriteLine("Строительство: ");
