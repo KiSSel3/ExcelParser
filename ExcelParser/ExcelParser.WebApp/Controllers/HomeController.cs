@@ -12,7 +12,7 @@ public class HomeController : Controller
 
     public HomeController()
     {
-        _rellevantLineInTables["Строительство "]=4;
+        _rellevantLineInTables["Строительство "] = 4;
         _rellevantLineInTables["Потребительские кредиты "] = 4;
         _rellevantLineInTables["Платежные карты и Овердрафт "] = 5;
         _rellevantLineInTables["Автокредитование "] = 4;

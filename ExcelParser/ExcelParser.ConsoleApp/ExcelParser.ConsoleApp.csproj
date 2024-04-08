@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ExcelParser.Parser\ExcelParser.Parser.csproj" />
+      <ProjectReference Include="..\ExcelParser.Service\ExcelParser.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>
