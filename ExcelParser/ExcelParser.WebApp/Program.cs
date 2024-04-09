@@ -1,8 +1,11 @@
+using ExcelParser.Service.Implementations;
+using ExcelParser.Service.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<ITableComparisonService, TableComparisonService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

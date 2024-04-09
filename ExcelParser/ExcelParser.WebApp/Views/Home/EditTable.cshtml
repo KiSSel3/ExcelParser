@@ -8,6 +8,7 @@
 }
 
 <body>
+<a href="@Url.Action("Home","Home",new {filePath=Model.FilePath})"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Главная</button></a>
 <form method="post" asp-controller="Home" asp-action="UpdateTable">
     <input type="hidden" name="filePath" value="@Model.FilePath"/>
     <div class="row px-xl-5">
@@ -41,7 +42,6 @@
                             <td><input type="text" name="note" value="@(tableRow.Note != null ? tableRow.Note : "")"/></td>
                         </tr>
                     }
-
                     </tbody>
                 </table>
             }
