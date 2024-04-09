@@ -28,7 +28,6 @@ public class Parser
 
         _finishParsing = false;
         
-        //TODO: заглушка
         _rateСalculator = new RateСalculator();
     }
 
@@ -312,7 +311,7 @@ public class Parser
     {
         for (int col = 1; col <= 9; ++col)
         {
-            string? cellValue = worksheet.Cells[1, 1].Value?.ToString();
+            string? cellValue = worksheet.Cells[1, col].Value?.ToString();
             if (!string.IsNullOrEmpty(cellValue))
             {
                 return cellValue;
@@ -320,5 +319,20 @@ public class Parser
         }
 
         return DateTime.Today.ToString();
+    }
+
+    public string? GetTableCreateDate(string tableName)
+    {
+        FileInfo fileInfo = new FileInfo(_filePath);
+        using (ExcelPackage package = new ExcelPackage(fileInfo))
+        {
+            ExcelWorksheet worksheet = package.Workbook.Worksheets[tableName];
+            if (worksheet == null)
+            {
+                throw new Exception("Table not found");
+            }
+
+            return GetDate(worksheet);
+        }
     }
 }

@@ -13,7 +13,6 @@ public class RateСalculator
         _api = new ApiService();
     }
     
-    //TODO: Написать функции для подсчёта значений полей RateMin RateMax
     public Rate? Сalculation(string value, string date)
     {
         Rate rate = new Rate();

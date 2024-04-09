@@ -4,15 +4,15 @@ public class Macroprudentialregulation
 {
     public Macroprudentialregulation()
     {
-        OnPeriod = "";
-        RevocableDeposits = "";
-        IrrevocableDeposits_1_6 = "";
-        IrrevocableDeposits_6_1 = "";
-        IrrevocableDeposits_12 = "";
-        CreditsLegal = "";
-        CreditsIndividuals = "";
-        ResolutionBordDate = "";
-        ResolutionBordNumber = "";
+        OnPeriod = "0";
+        RevocableDeposits = "0";
+        IrrevocableDeposits_1_6 = "0";
+        IrrevocableDeposits_6_1 = "0";
+        IrrevocableDeposits_12 = "0";
+        CreditsLegal = "0";
+        CreditsIndividuals = "0";
+        ResolutionBordDate = "0";
+        ResolutionBordNumber = "0";
     }
 
     public string OnPeriod { get; set; }

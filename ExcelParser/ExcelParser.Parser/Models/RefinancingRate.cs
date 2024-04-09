@@ -7,7 +7,7 @@ public class RefinancingRate
     public RefinancingRate()
     {
         Date = DateTime.Now;
-        Value = -1;
+        Value = 0;
     }
     
     [Key]
