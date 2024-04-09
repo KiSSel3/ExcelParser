@@ -1,3 +1,4 @@
+using System.Globalization;
 using ExcelParser.Parser.Models;
 using ExcelParser.Parser.Utils;
 using ExcelParser.Service.Interfaces;
@@ -17,7 +18,7 @@ public class TableStatisticsService : ITableStatisticsService
     {
         ApiService api = new ApiService();
         Macroprudentialregulation macroprudentialregulation = api.GetMacroprudentialregulation(date).Result;
-        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals);
+        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals, NumberStyles.Any, CultureInfo.InvariantCulture);
 
         int count = 0;
 
@@ -38,14 +39,15 @@ public class TableStatisticsService : ITableStatisticsService
     {
         ApiService api = new ApiService();
         Macroprudentialregulation macroprudentialregulation = api.GetMacroprudentialregulation(date).Result;
-        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals);
+        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals, NumberStyles.Any, CultureInfo.InvariantCulture);
 
         int count = 0;
-        
-        foreach (var row in tableRows)
+
+        var creditProducts = tableRows.GroupBy(item => new { item.CreditProduct, item.BankName }); 
+        foreach (var creditProduct in creditProducts)
         {
-            double rowRateMax = row.RateMax?.ValueDouble ?? 0.0;
-            if (rowRateMax <= rvsr)
+            double maxRvsrInCreditProduct = creditProduct.Max(item => item.RateMax?.ValueDouble ?? 0.0);
+            if (maxRvsrInCreditProduct <= rvsr)
             {
                 ++count;
             }
@@ -58,7 +60,7 @@ public class TableStatisticsService : ITableStatisticsService
     {
         ApiService api = new ApiService();
         Macroprudentialregulation macroprudentialregulation = api.GetMacroprudentialregulation(date).Result;
-        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals);
+        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals, NumberStyles.Any, CultureInfo.InvariantCulture);
 
         int count = 0;
 
@@ -79,14 +81,15 @@ public class TableStatisticsService : ITableStatisticsService
     {
         ApiService api = new ApiService();
         Macroprudentialregulation macroprudentialregulation = api.GetMacroprudentialregulation(date).Result;
-        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals);
+        double rvsr = double.Parse(macroprudentialregulation.CreditsIndividuals, NumberStyles.Any, CultureInfo.InvariantCulture);
 
         int count = 0;
-        
-        foreach (var row in tableRows)
+
+        var creditProducts = tableRows.GroupBy(item => new { item.CreditProduct, item.BankName });
+        foreach (var creditProduct in creditProducts)
         {
-            double rowRateMax = row.RateMax?.ValueDouble ?? 0.0;
-            if (rowRateMax > rvsr)
+            double maxRvsrInCreditProduct = creditProduct.Max(item => item.RateMax?.ValueDouble ?? 0.0);
+            if (maxRvsrInCreditProduct > rvsr)
             {
                 ++count;
             }

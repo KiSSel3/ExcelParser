@@ -69,7 +69,7 @@ internal class Program
 
         #region CompareTest
         
-        string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
+        /*string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
         if (!File.Exists(firstFilePath))
         {
             Console.WriteLine("Файл не найден.");
@@ -96,7 +96,38 @@ internal class Program
         foreach (var row in comparisonTable)
         {
             Console.WriteLine(row.Item2);
+        }*/
+
+        #endregion
+
+        #region StatisticTest
+
+        string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
+        if (!File.Exists(firstFilePath))
+        {
+            Console.WriteLine("Файл не найден.");
+            return;
         }
+
+        Parser firstParser = new Parser(firstFilePath, 9);
+        var firstBuildingData = firstParser.GetTableRows("Строительство ", 4);
+        
+        string secondFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\КРЕДИТНЫЕ ПРОДУКТЫ.xlsx";
+        if (!File.Exists(secondFilePath))
+        {
+            Console.WriteLine("Файл не найден.");
+            return;
+        }
+
+        TableStatisticsService service = new TableStatisticsService();
+
+        Console.WriteLine(service.GetMaxRate(firstBuildingData));
+        
+        Console.WriteLine(service.GetCountOfBanksWithMaxRateBelowRVSR(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
+        Console.WriteLine(service.GetCountOfCreditProductsWithMaxRateBelowRVSR(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
+        
+        Console.WriteLine(service.GetCountOfBanksWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
+        Console.WriteLine(service.GetCountOfCreditProductsWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
 
         #endregion
     }
