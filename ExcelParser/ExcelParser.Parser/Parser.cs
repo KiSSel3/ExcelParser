@@ -312,12 +312,14 @@ public class Parser
         for (int col = 1; col <= 9; ++col)
         {
             string? cellValue = worksheet.Cells[1, col].Value?.ToString();
+            Console.WriteLine("Iter");
             if (!string.IsNullOrEmpty(cellValue))
             {
+                Console.WriteLine(cellValue);
                 return cellValue;
             }
         }
-
+        
         return DateTime.Today.ToString();
     }
 

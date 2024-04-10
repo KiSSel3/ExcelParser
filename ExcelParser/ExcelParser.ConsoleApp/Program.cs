@@ -15,7 +15,7 @@ internal class Program
     {
         #region BaseTest
 
-        /*string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\КРЕДИТНЫЕ ПРОДУКТЫ.xlsx";
+        string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI — копия.xlsx";
 
         // Проверяем существует ли файл
         if (!File.Exists(filePath))
@@ -30,13 +30,14 @@ internal class Program
         var buildingData =  parser.GetTableRows("Строительство ", 4);
         foreach (var item in buildingData)
         {
-            Console.WriteLine("\n\n");
+            /*Console.WriteLine("\n\n");
             Console.WriteLine($"{item.Id} | {item.BankName} | {item.CreditProduct} | {item.TermMin} | {item.TermMax} | {item.Period} | {item.RateMin?.ValueString} | {item.RateMax?.ValueString} | {item.Note}");
-            Console.WriteLine("\n\n");
+            Console.WriteLine("\n\n");*/
 
-            //Console.WriteLine($"{item.RateMax?.ValueString} = {item.RateMax?.ValueDouble}");
+            Console.WriteLine($"{item.RateMax?.ValueString} = {item.RateMax?.ValueDouble}");
         }
 
+        /*
         Console.WriteLine("Потребительские кредиты: ");
         var consumerLoansData =  parser.GetTableRows("Потребительские кредиты ", 4);
         foreach (var item in consumerLoansData)
@@ -102,7 +103,7 @@ internal class Program
 
         #region StatisticTest
 
-        string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
+        /*string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
         if (!File.Exists(firstFilePath))
         {
             Console.WriteLine("Файл не найден.");
@@ -111,14 +112,7 @@ internal class Program
 
         Parser firstParser = new Parser(firstFilePath, 9);
         var firstBuildingData = firstParser.GetTableRows("Строительство ", 4);
-        
-        string secondFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\КРЕДИТНЫЕ ПРОДУКТЫ.xlsx";
-        if (!File.Exists(secondFilePath))
-        {
-            Console.WriteLine("Файл не найден.");
-            return;
-        }
-
+        Console.WriteLine("Список получен");
         TableStatisticsService service = new TableStatisticsService();
 
         Console.WriteLine(service.GetMaxRate(firstBuildingData));
@@ -127,7 +121,7 @@ internal class Program
         Console.WriteLine(service.GetCountOfCreditProductsWithMaxRateBelowRVSR(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
         
         Console.WriteLine(service.GetCountOfBanksWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
-        Console.WriteLine(service.GetCountOfCreditProductsWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
+        Console.WriteLine(service.GetCountOfCreditProductsWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));*/
 
         #endregion
     }
