@@ -4,29 +4,30 @@
 
 <!-- Image and text -->
 
-<div align="center">
     <h2>Выбирете файл для открытия</h2>
     <a href="@Url.Action("Index","Home")"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Назад к открытию файла</button></a>
     <form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadComparingTables">
         <div class="input-group" style="text-align: center;">
             <input type="file" id="firstFileInput" name="firstFile" style="display: none;" />
             <input type="file" id="secondFileInput" name="secondFile" style="display: none;" />
+            
             <span class="input-group-btn">
+                <h4>Первый файл</h4>
                 <button class="btn btn-secondary" type="button" id="firstUploadButton" style="border: none; background-color: transparent; padding: 0;align-content: center">
-                    <img src="@Url.Content("~/img/upload.jpg")" alt="Upload" width="300" height="250" style="border: none; outline: none;align-self: center; margin-right: 100px;;margin-left:300px "/>
+                    <img src="@Url.Content("~/img/upload.jpg")" alt="Upload" width="300" height="250" class="image-center"/>
 
                 </button>
             </span>
             <span class="input-group-btn">
+            <h4>Второй файл</h4>
                 <button class="btn btn-secondary" type="button" id="secondUploadButton" style="border: none; background-color: transparent; padding: 0;align-content: center">
-                    <img src="@Url.Content("~/img/upload.jpg")" alt="Upload" width="300" height="250" style="border: none; outline: none;align-self: center"/>
+                    <img src="@Url.Content("~/img/upload.jpg")" alt="Upload" width="300" height="250" class="image-center"/>
 
                 </button>
                 </span>
         </div>
         <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Загрузить файл</button>
     </form>
-</div>
 
 
 

@@ -5,6 +5,43 @@
 }
 
 <body>
-<div>
+<div class="row">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Строительство</h5>
+        <a href="@Url.Action("GetBuildingTable", "Home", new {filePath=Model.FilePath})" class="btn btn-primary">Перейти к таблице</a>
+        <a href="@Url.Action("Statistics", "Home", new {filePath=Model.FilePath,tableName="Строительство "})" class="btn btn-primary">Статистика</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Потребительские кредиты</h5>
+        <a href="@Url.Action("GetConsumerLoansTable", "Home", new {filePath=Model.FilePath})" class="btn btn-primary">Перейти к таблице</a>
+        <a href="@Url.Action("Statistics", "Home", new {filePath=Model.FilePath,tableName="Потребительские кредиты "})" class="btn btn-primary">Статистика</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Платежные карты и Овердрафт</h5>
+        <a href="@Url.Action("GetPaymentCardsAndOverdraftTable", "Home", new {filePath=Model.FilePath})" class="btn btn-primary">Перейти к таблице</a>
+        <a href="@Url.Action("Statistics", "Home", new {filePath=Model.FilePath,tableName="Платежные карты и Овердрафт "})" class="btn btn-primary">Статистика</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Автокредитование</h5>
+        <a href="@Url.Action("GetCarLoansTable", "Home", new {filePath=Model.FilePath})" class="btn btn-primary">Перейти к таблице</a>
+        <a href="@Url.Action("Statistics", "Home", new {filePath=Model.FilePath,tableName="Автокредитование "})" class="btn btn-primary">Статистика</a>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
+

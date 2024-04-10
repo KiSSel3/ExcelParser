@@ -42,24 +42,9 @@ public class HomeController : Controller
         return parser.GetTableCreateDate(tableName);
     }
     
-    private async Task<List<TableStatisticsViewModel>> GetStatistics(string filePath)
+    private TableStatisticsViewModel GetStatistics(string filePath,string tableName)
     {
-        var tablesStatistics = new List<TableStatisticsViewModel>();
-        List<string> tableNames = _rellevantLineInTables.Keys.ToList();
-        Task<TableStatisticsViewModel> statisticFromFirstTable =
-            Task.Run(() => GetTableStatistic(filePath,tableNames[0]));
-        Task<TableStatisticsViewModel> statisticFromSecondTable =
-            Task.Run(() => GetTableStatistic(filePath,tableNames[0]));
-        Task<TableStatisticsViewModel> statisticFromThirdTable =
-            Task.Run(() => GetTableStatistic(filePath,tableNames[0]));
-        Task<TableStatisticsViewModel> statisticFromForthTable =
-            Task.Run(() => GetTableStatistic(filePath,tableNames[0]));
-        await Task.WhenAll(statisticFromFirstTable,statisticFromSecondTable,statisticFromThirdTable,statisticFromForthTable);
-        tablesStatistics.Add(await statisticFromFirstTable);
-        tablesStatistics.Add(await statisticFromSecondTable);
-        tablesStatistics.Add(await statisticFromThirdTable);
-        tablesStatistics.Add(await statisticFromForthTable);
-        return tablesStatistics;
+        return GetTableStatistic(filePath,tableName);
     }
 
     private async Task<string> UploadFile(IFormFile file)
@@ -210,9 +195,9 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Statistics(string filePath)
+    public async Task<IActionResult> Statistics(string filePath,string tableName)
     {
-        var statistics = await GetStatistics(filePath);
+        var statistics = GetStatistics(filePath,tableName);
         return View("Statistics", new TableRowViewModel() { Statistics = statistics, FilePath = filePath });
     }
 }
