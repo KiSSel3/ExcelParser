@@ -1,7 +1,6 @@
 @model TableRowViewModel
 
 @{
-    var statistic = Model.Statistics;
     Layout = "_Layout";
 }
 
@@ -9,12 +8,56 @@
 
 <body>
 <a href="@Url.Action("Home","Home",new {filePath=Model.FilePath})"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Главная</button></a>
-<div>
-        <h1>@statistic.TableName</h1>
-        <h3>@statistic.StatisticsViewModel.MaxRate</h3>
-        <h3>@statistic.StatisticsViewModel.CountOfBanksWithMaxRateBelowRVSR</h3>
-        <h3>@statistic.StatisticsViewModel.CountOfBanksWithRateAboveRVSRBelow20</h3>
-        <h3>@statistic.StatisticsViewModel.CountOfCreditProductsWithMaxRateBelowRVSR</h3>
-        <h3>@statistic.StatisticsViewModel.CountOfCreditProductsWithRateAboveRVSRBelow20</h3>
+<div align="center">
+    <h1>Уровень процентных ставок по кредитным продуктам банков</h1>
+    <h1>@Model.Statistics[0].Date</h1>
+    <table id="cartTable" class="table table-bordered text-center mb-0">
+        <thead class="bg-secondary text-dark">
+        <tr>
+            <th class="td-statistic-high"></th>
+            @foreach (var statistic in Model.Statistics)
+            {
+                <th style="width: 350px">@statistic.TableName</th>
+            }
+        </tr>
+        </thead>
+        <tbody class="align-middle">
+        <tr>
+            <td >Максимальная ставка</td>
+            @foreach (var row in Model.Statistics)
+            {
+                <td>@row.StatisticsViewModel.MaxRate</td>
+            }
+        </tr>
+    </table>
+    <table id="cartTable" class="table table-bordered text-center mb-0">
+        <thead class="bg-secondary text-dark">
+        <tr>
+            <th style="width: 315px"></th>
+            @foreach (var statistic in Model.Statistics)
+            {
+                <th class="td-statistic-low">Кол-во банков</th>
+                <th class="td-statistic-low">Кол-во продуктов</th>
+            }
+        </tr>
+        </thead>
+        <tbody class="align-middle">
+        <tr>
+            <td>≤ РВСР</td>
+            @foreach (var statistic in Model.Statistics)
+            {
+                <td > @statistic.StatisticsViewModel.CountOfBanksWithMaxRateBelowRVSR</td>
+                <td >@statistic.StatisticsViewModel.CountOfCreditProductsWithMaxRateBelowRVSR</td>
+            }
+        </tr>
+        <tr>
+            <td>˃ РВСР ≤ 20%</td>
+            @foreach (var statistic in Model.Statistics)
+            {
+                <td >@statistic.StatisticsViewModel.CountOfBanksWithRateAboveRVSRBelow20</td>
+                <td >@statistic.StatisticsViewModel.CountOfCreditProductsWithRateAboveRVSRBelow20</td>
+            }
+        </tbody>
+        </table>
 </div>
 </body>

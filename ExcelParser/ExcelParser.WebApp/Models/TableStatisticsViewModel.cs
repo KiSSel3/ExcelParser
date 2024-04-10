@@ -4,4 +4,5 @@ public class TableStatisticsViewModel
 {
     public StatisticsViewModel StatisticsViewModel { get; set; }
     public string TableName { get; set; }
+    public string Date { get; set; }
 }

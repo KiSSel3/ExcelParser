@@ -34,7 +34,7 @@ public class HomeController : Controller
             _statisticsService.GetCountOfCreditProductsWithMaxRateBelowRVSR(table, date);
         tableStatistics.CountOfCreditProductsWithRateAboveRVSRBelow20 =
             _statisticsService.GetCountOfCreditProductsWithRateAboveRVSRBelow20(table, date);
-        return new TableStatisticsViewModel(){StatisticsViewModel = tableStatistics,TableName = tableName};
+        return new TableStatisticsViewModel(){StatisticsViewModel = tableStatistics,TableName = tableName,Date = date};
     }
     private string GetTableCreateDate(string tableName, string filePath)
     {
@@ -195,9 +195,18 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Statistics(string filePath,string tableName)
+    public async Task<IActionResult> Statistics(string filePath,string tableName,bool isForAll)
     {
+        if (isForAll)
+        {
+            List<TableStatisticsViewModel> statisticsViewModels = new();
+            foreach (var name in _rellevantLineInTables.Keys)
+            {
+                statisticsViewModels.Add(GetStatistics(filePath,name));
+            }
+            return View("Statistics", new TableRowViewModel() { Statistics =statisticsViewModels, FilePath = filePath });
+        }
         var statistics = GetStatistics(filePath,tableName);
-        return View("Statistics", new TableRowViewModel() { Statistics = statistics, FilePath = filePath });
+        return View("Statistics", new TableRowViewModel() { Statistics = new List<TableStatisticsViewModel>(){statistics}, FilePath = filePath });
     }
 }

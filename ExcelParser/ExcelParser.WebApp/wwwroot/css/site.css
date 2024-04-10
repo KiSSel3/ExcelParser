@@ -109,3 +109,9 @@ body {
   align-items: center;
   border: none; /* Удаляем границу */
 }
+.td-statistic-low{
+  width: 175px;
+}
+.td-statistic-high{
+  width: 250px;
+}

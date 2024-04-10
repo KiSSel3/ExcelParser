@@ -38,10 +38,11 @@
       <div class="card-body">
         <h5 class="card-title">Автокредитование</h5>
         <a href="@Url.Action("GetCarLoansTable", "Home", new {filePath=Model.FilePath})" class="btn btn-primary">Перейти к таблице</a>
-        <a href="@Url.Action("Statistics", "Home", new {filePath=Model.FilePath,tableName="Автокредитование "})" class="btn btn-primary">Статистика</a>
+        <a href="@Url.Action("Statistics", "Home", new {filePath=Model.FilePath,tableName="Автокредитование ",isForAll=false})" class="btn btn-primary">Статистика</a>
       </div>
     </div>
   </div>
 </div>
+<a href="@Url.Action("Statistics","Home",new {filePath=Model.FilePath,isForAll=true})"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Общая статистика</button></a>
 </body>
 
