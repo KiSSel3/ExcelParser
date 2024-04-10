@@ -47,7 +47,7 @@ public class RateСalculator
             
             inPercent = true;
         }
-
+        
         rate.ValueDouble = GetDoubleValue(value);
 
         if (!inPercent)
