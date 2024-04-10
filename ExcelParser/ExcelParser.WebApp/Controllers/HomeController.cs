@@ -1,4 +1,6 @@
+using ExcelParser.Parser.Models;
 using ExcelParser.Service.Interfaces;
+using ExcelParser.WebApp.Enums;
 using Microsoft.AspNetCore.Mvc;
 using ExcelParser.WebApp.Models;
 
@@ -9,11 +11,13 @@ public class HomeController : Controller
     private readonly Dictionary<string, int> _rellevantLineInTables = new();
     private readonly ITableComparisonService _comparisonService;
     private readonly ITableStatisticsService _statisticsService;
+    private readonly IRowFilteringService _rowFilteringService;
 
-    public HomeController(ITableComparisonService comparisonService, ITableStatisticsService statisticsService)
+    public HomeController(ITableComparisonService comparisonService, ITableStatisticsService statisticsService, IRowFilteringService rowFilteringService)
     {
         _comparisonService = comparisonService;
         _statisticsService = statisticsService;
+        _rowFilteringService = rowFilteringService;
         _rellevantLineInTables["Строительство "] = 4;
         _rellevantLineInTables["Потребительские кредиты "] = 4;
         _rellevantLineInTables["Платежные карты и Овердрафт "] = 5;
@@ -101,6 +105,118 @@ public class HomeController : Controller
         }
     }
 
+    [HttpPost]
+    public async Task<IActionResult> TableFiltering(TableRowViewModel tableRowViewModel, string tableName)
+    {
+        var data = GetTableRowsByTableName(tableName, tableRowViewModel.FilePath, _rellevantLineInTables[tableName]).TableRows;
+        
+        if (tableRowViewModel.TermMinFiltering != BaseFilteringParameters.None)
+        {
+            if (tableRowViewModel.TermMinFiltering == BaseFilteringParameters.IsNull)
+            {
+                data = _rowFilteringService.TermMinIsNull(data).ToList();
+            }
+            else
+            {
+                data = _rowFilteringService.TermMinIsNotNull(data).ToList();
+            }
+        }
+
+        if (tableRowViewModel.TermMinMinimumValue != null || tableRowViewModel.TermMinMaximumValue != null)
+        {
+            data = _rowFilteringService.TermMinByInterval(tableRowViewModel.TermMinMinimumValue,
+                tableRowViewModel.TermMinMaximumValue, data).ToList();
+        }
+        
+        if (tableRowViewModel.TermMaxFiltering != BaseFilteringParameters.None)
+        {
+            if (tableRowViewModel.TermMaxFiltering == BaseFilteringParameters.IsNull)
+            {
+                data = _rowFilteringService.TermMaxIsNull(data).ToList();
+            }
+            else
+            {
+                data = _rowFilteringService.TermMaxIsNotNull(data).ToList();
+            }
+        }
+        
+        if (tableRowViewModel.TermMaxMinimumValue != null || tableRowViewModel.TermMaxMaximumValue != null)
+        {
+            data = _rowFilteringService.TermMaxByInterval(tableRowViewModel.TermMaxMinimumValue,
+                tableRowViewModel.TermMaxMaximumValue, data).ToList();
+        }
+        
+        if (tableRowViewModel.RateMinFiltering != BaseFilteringParameters.None)
+        {
+            if (tableRowViewModel.RateMinFiltering == BaseFilteringParameters.IsNull)
+            {
+                data = _rowFilteringService.RateMinIsNull(data).ToList();
+            }
+            else
+            {
+                data = _rowFilteringService.RateMinIsNotNull(data).ToList();
+            }
+        }
+        
+        if (tableRowViewModel.RateMinMinimumValue != null || tableRowViewModel.RateMinMaximumValue != null)
+        {
+            data = _rowFilteringService.RateMinByInterval(tableRowViewModel.RateMinMinimumValue,
+                tableRowViewModel.RateMinMaximumValue, data).ToList();
+        }
+        
+        if (tableRowViewModel.RateMaxFiltering != BaseFilteringParameters.None)
+        {
+            if (tableRowViewModel.RateMaxFiltering == BaseFilteringParameters.IsNull)
+            {
+                data = _rowFilteringService.RateMaxIsNull(data).ToList();
+            }
+            else
+            {
+                data = _rowFilteringService.RateMaxIsNotNull(data).ToList();
+            }
+        }
+        
+        if (tableRowViewModel.RateMaxMinimumValue != null || tableRowViewModel.RateMaxMaximumValue != null)
+        {
+            data = _rowFilteringService.TermMaxByInterval(tableRowViewModel.RateMaxMinimumValue,
+                tableRowViewModel.RateMaxMaximumValue, data).ToList();
+        }
+        
+        if (tableRowViewModel.NoteFiltering != BaseFilteringParameters.None)
+        {
+            if (tableRowViewModel.NoteFiltering == BaseFilteringParameters.IsNull)
+            {
+                data = _rowFilteringService.NoteIsNull(data).ToList();
+            }
+            else
+            {
+                data = _rowFilteringService.NoteIsNotNull(data).ToList();
+            }
+        }
+
+        if (tableRowViewModel.PeriodFiltering != PeriodFilteringParameters.None)
+        {
+            if (tableRowViewModel.PeriodFiltering == PeriodFilteringParameters.Month)
+            {
+                data = _rowFilteringService.Period("мес", data).ToList();
+            }
+            else
+            {
+                data = _rowFilteringService.Period("год", data).ToList();
+            }
+        }
+        
+        if (!string.IsNullOrEmpty(tableRowViewModel.KeywordSearch))
+        {
+            data = _rowFilteringService.KeywordSearch(tableRowViewModel.KeywordSearch, data).ToList();
+        }
+
+        tableRowViewModel.TableRows = data;
+        
+        ViewData["Title"] = tableName;
+        return CheckForDataValid(tableRowViewModel);
+    }
+    
     public async Task<IActionResult> GetBuildingTable(string filePath)
     {
         var tableName = "Строительство ";
@@ -144,6 +260,8 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel)
     {
+        
+        
         return View("Home",
             new TableRowViewModel()
                 { FilePath = tableRowViewModel.FilePath});

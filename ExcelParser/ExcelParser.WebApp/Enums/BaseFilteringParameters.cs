@@ -1,6 +1,6 @@
 namespace ExcelParser.WebApp.Enums;
 
-public enum NoteFilteringParameters
+public enum BaseFilteringParameters
 {
     None,
     

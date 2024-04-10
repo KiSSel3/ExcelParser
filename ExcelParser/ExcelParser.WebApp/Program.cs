@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ITableComparisonService, TableComparisonService>();
 builder.Services.AddScoped<ITableStatisticsService, TableStatisticsService>();
+builder.Services.AddScoped<IRowFilteringService, RowFilteringService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

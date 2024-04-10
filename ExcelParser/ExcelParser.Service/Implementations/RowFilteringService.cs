@@ -82,6 +82,14 @@ public class RowFilteringService : IRowFilteringService
 
     public IEnumerable<TableRow> KeywordSearch(string keyword, IEnumerable<TableRow> tableRows)
     {
-        return tableRows.Where(item => item.Note is not null && item.Note.Contains(keyword));
+        return tableRows.Where(item => ((item.Id is not null && item.Id.Contains(keyword)) ||
+                                                 (item.BankName is not null && item.BankName.Contains(keyword)) ||
+                                                 (item.CreditProduct is not null && item.CreditProduct.Contains(keyword)) ||
+                                                 (item.TermMin is not null && item.TermMin.ToString().Contains(keyword)) ||
+                                                 (item.TermMax is not null && item.TermMax.ToString().Contains(keyword)) ||
+                                                 (item.Period is not null && item.Period.Contains(keyword)) ||
+                                                 (item.RateMin is not null && item.RateMin.ValueString.Contains(keyword)) ||
+                                                 (item.RateMax is not null && item.RateMax.ValueString.Contains(keyword)) ||
+                                                  item.Note is not null && item.Note.Contains(keyword)));
     }
 }
