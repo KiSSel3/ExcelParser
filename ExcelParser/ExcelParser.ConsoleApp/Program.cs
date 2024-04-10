@@ -15,7 +15,7 @@ internal class Program
     {
         #region BaseTest
 
-        string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI — копия.xlsx";
+        /*string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI — копия.xlsx";
 
         // Проверяем существует ли файл
         if (!File.Exists(filePath))
@@ -32,12 +32,12 @@ internal class Program
         {
             /*Console.WriteLine("\n\n");
             Console.WriteLine($"{item.Id} | {item.BankName} | {item.CreditProduct} | {item.TermMin} | {item.TermMax} | {item.Period} | {item.RateMin?.ValueString} | {item.RateMax?.ValueString} | {item.Note}");
-            Console.WriteLine("\n\n");*/
+            Console.WriteLine("\n\n");
 
             Console.WriteLine($"{item.RateMax?.ValueString} = {item.RateMax?.ValueDouble}");
         }
 
-        /*
+
         Console.WriteLine("Потребительские кредиты: ");
         var consumerLoansData =  parser.GetTableRows("Потребительские кредиты ", 4);
         foreach (var item in consumerLoansData)
@@ -69,7 +69,7 @@ internal class Program
         #endregion
 
         #region CompareTest
-        
+
         /*string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
         if (!File.Exists(firstFilePath))
         {
@@ -79,7 +79,7 @@ internal class Program
 
         Parser firstParser = new Parser(firstFilePath, 9);
         var firstBuildingData = firstParser.GetTableRows("Строительство ", 4);
-        
+
         string secondFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\КРЕДИТНЫЕ ПРОДУКТЫ.xlsx";
         if (!File.Exists(secondFilePath))
         {
@@ -101,7 +101,7 @@ internal class Program
 
         #endregion
 
-            #region StatisticTest
+        #region StatisticTest
 
         /*string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
         if (!File.Exists(firstFilePath))
@@ -116,12 +116,33 @@ internal class Program
         TableStatisticsService service = new TableStatisticsService();
 
         Console.WriteLine(service.GetMaxRate(firstBuildingData));
-        
+
         Console.WriteLine(service.GetCountOfBanksWithMaxRateBelowRVSR(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
         Console.WriteLine(service.GetCountOfCreditProductsWithMaxRateBelowRVSR(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
-        
+
         Console.WriteLine(service.GetCountOfBanksWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));
         Console.WriteLine(service.GetCountOfCreditProductsWithRateAboveRVSRBelow20(firstBuildingData, firstParser.GetTableCreateDate("Строительство ")));*/
+
+        #endregion
+
+        #region SaveTest
+
+        string filePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI (2).xlsx";
+        
+        if (!File.Exists(filePath))
+        {
+            Console.WriteLine("Файл не найден.");
+            return;
+        }
+
+        Parser parser = new Parser(filePath, 9);
+
+        Console.WriteLine("Строительство: ");
+        var buildingData = parser.GetTableRows("Строительство ", 4);
+        buildingData[2].BankName = "testVal";
+        buildingData[0].Note = "Yes";
+        
+        parser.SaveChanges(buildingData, "Строительство ", 4);
 
         #endregion
     }

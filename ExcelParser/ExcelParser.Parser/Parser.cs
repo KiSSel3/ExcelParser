@@ -312,10 +312,8 @@ public class Parser
         for (int col = 1; col <= 9; ++col)
         {
             string? cellValue = worksheet.Cells[1, col].Value?.ToString();
-            Console.WriteLine("Iter");
             if (!string.IsNullOrEmpty(cellValue))
             {
-                Console.WriteLine(cellValue);
                 return cellValue;
             }
         }
@@ -337,4 +335,36 @@ public class Parser
             return GetDate(worksheet);
         }
     }
+
+    public void SaveChanges(List<TableRow> list, string tableName, int firstRelevantLine)
+    {
+        FileInfo fileInfo = new FileInfo(_filePath);
+        using (ExcelPackage package = new ExcelPackage(fileInfo))
+        {
+            ExcelWorksheet worksheet = package.Workbook.Worksheets[tableName];
+            if (worksheet == null)
+            {
+                throw new Exception("Table not found");
+            }
+
+            int row = firstRelevantLine;
+            foreach (var item in list)
+            {
+                worksheet.Cells[row, 1].Value = item.Id;
+                worksheet.Cells[row, 2].Value = item.BankName;
+                worksheet.Cells[row, 3].Value = item.CreditProduct;
+                worksheet.Cells[row, 4].Value = item.TermMin;
+                worksheet.Cells[row, 5].Value = item.TermMax;
+                worksheet.Cells[row, 6].Value = item.Period;
+                worksheet.Cells[row, 7].Value = item.RateMin?.ValueString;
+                worksheet.Cells[row, 8].Value = item.RateMax?.ValueString;
+                worksheet.Cells[row, 9].Value = item.Note;
+            
+                row++;
+            }
+
+            package.Save();
+        }
+    }
+
 }
