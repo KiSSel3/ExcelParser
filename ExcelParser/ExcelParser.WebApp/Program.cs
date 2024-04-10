@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ITableComparisonService, TableComparisonService>();
+builder.Services.AddScoped<ITableStatisticsService, TableStatisticsService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

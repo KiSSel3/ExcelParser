@@ -100,7 +100,7 @@ internal class Program
 
         #endregion
 
-        #region StatisticTest
+            #region StatisticTest
 
         string firstFilePath = @"C:\Users\Kissel\OneDrive\Рабочий стол\KREDITNIEPRODUKTI.xlsx";
         if (!File.Exists(firstFilePath))

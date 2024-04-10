@@ -1,0 +1,22 @@
+@model TableRowViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+
+<body>
+<a href="@Url.Action("Home","Home",new {filePath=Model.FilePath})"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Главная</button></a>
+<div>
+    @foreach (var statistic in Model.Statistics)
+    {
+        <h1>@statistic.TableName</h1>
+        <h3>@statistic.StatisticsViewModel.MaxRate</h3>
+        <h3>@statistic.StatisticsViewModel.CountOfBanksWithMaxRateBelowRVSR</h3>
+        <h3>@statistic.StatisticsViewModel.CountOfBanksWithRateAboveRVSRBelow20</h3>
+        <h3>@statistic.StatisticsViewModel.CountOfCreditProductsWithMaxRateBelowRVSR</h3>
+        <h3>@statistic.StatisticsViewModel.CountOfCreditProductsWithRateAboveRVSRBelow20</h3>
+    }
+</div>
+</body>
