@@ -262,21 +262,44 @@ public class HomeController : Controller
     {
         var tableRows = GetTableRowsByTableName(tableName, filePath, _rellevantLineInTables[tableName]);
         ViewData["Title"] = tableName;
+    
+        HttpContext.Session.SetString("FilePath", filePath);
+        HttpContext.Session.SetString("TableName", tableName);
+        
+        foreach (TableRow row in tableRows.TableRows)
+        {
+            row.CreditProduct ??= "";
+            row.TermMin ??= 0;
+            row.TermMax ??= 0;
+            row.Period ??= "";
+            row.RateMin ??= new Rate();
+            row.RateMax ??= new Rate();
+            row.Note ??= "";
+        }
+        
         return View("EditTable", tableRows);
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel,string tableName)
+    public async Task<IActionResult> UpdateTable(List<TableRow> TableRows)
     {
-        Parser.Parser parser = new Parser.Parser(tableRowViewModel.FilePath, 9);
-        parser.SaveChanges(tableRowViewModel.TableRows,tableName,_rellevantLineInTables[tableName]);
-        return View("Download", tableRowViewModel.FilePath);
+        Console.WriteLine(TableRows.Count);
+        string filePath = HttpContext.Session.GetString("FilePath");
+        Console.WriteLine(filePath);
+        string tableName = HttpContext.Session.GetString("TableName");
+        Console.WriteLine(tableName);
+        HttpContext.Session.Remove("FilePath");
+        HttpContext.Session.Remove("TableName");
+        
+        Parser.Parser parser = new Parser.Parser(filePath, 9);
+        parser.SaveChanges(TableRows,tableName,_rellevantLineInTables[tableName]);
+        return View("Download", filePath);
     }
 
     [HttpGet]
     public async Task<IActionResult> UploadComparingTables()
     {
-        return View("CompareIndex");
+        return View("CompareIndex"); 
     }
 
     [HttpPost]

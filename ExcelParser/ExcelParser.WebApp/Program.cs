@@ -8,6 +8,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ITableComparisonService, TableComparisonService>();
 builder.Services.AddScoped<ITableStatisticsService, TableStatisticsService>();
 builder.Services.AddScoped<IRowFilteringService, RowFilteringService>();
+
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,6 +21,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
