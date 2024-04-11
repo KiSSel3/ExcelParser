@@ -14,7 +14,8 @@ public class HomeController : Controller
     private readonly ITableStatisticsService _statisticsService;
     private readonly IRowFilteringService _rowFilteringService;
 
-    public HomeController(ITableComparisonService comparisonService, ITableStatisticsService statisticsService, IRowFilteringService rowFilteringService)
+    public HomeController(ITableComparisonService comparisonService, ITableStatisticsService statisticsService,
+        IRowFilteringService rowFilteringService)
     {
         _comparisonService = comparisonService;
         _statisticsService = statisticsService;
@@ -39,17 +40,19 @@ public class HomeController : Controller
             _statisticsService.GetCountOfCreditProductsWithMaxRateBelowRVSR(table, date);
         tableStatistics.CountOfCreditProductsWithRateAboveRVSRBelow20 =
             _statisticsService.GetCountOfCreditProductsWithRateAboveRVSRBelow20(table, date);
-        return new TableStatisticsViewModel(){StatisticsViewModel = tableStatistics,TableName = tableName,Date = date};
+        return new TableStatisticsViewModel()
+            { StatisticsViewModel = tableStatistics, TableName = tableName, Date = date };
     }
+
     private string GetTableCreateDate(string tableName, string filePath)
     {
         Parser.Parser parser = new Parser.Parser(filePath, 9);
         return parser.GetTableCreateDate(tableName);
     }
-    
-    private TableStatisticsViewModel GetStatistics(string filePath,string tableName)
+
+    private TableStatisticsViewModel GetStatistics(string filePath, string tableName)
     {
-        return GetTableStatistic(filePath,tableName);
+        return GetTableStatistic(filePath, tableName);
     }
 
     private async Task<string> UploadFile(IFormFile file)
@@ -64,6 +67,7 @@ public class HomeController : Controller
 
         return filePath;
     }
+
     public IActionResult DownloadExcelFile(string filePath)
     {
         byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -95,7 +99,7 @@ public class HomeController : Controller
 
     public IActionResult Home(string filePath)
     {
-        return View("Home", new TableRowViewModel() { FilePath = filePath});
+        return View("Home", new TableRowViewModel() { FilePath = filePath });
     }
 
     [HttpPost]
@@ -115,8 +119,9 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> TableFiltering(TableRowViewModel tableRowViewModel, string tableName)
     {
-        var data = GetTableRowsByTableName(tableName, tableRowViewModel.FilePath, _rellevantLineInTables[tableName]).TableRows;
-        
+        var data = GetTableRowsByTableName(tableName, tableRowViewModel.FilePath, _rellevantLineInTables[tableName])
+            .TableRows;
+
         if (tableRowViewModel.TermMinFiltering != BaseFilteringParameters.None)
         {
             if (tableRowViewModel.TermMinFiltering == BaseFilteringParameters.IsNull)
@@ -134,7 +139,7 @@ public class HomeController : Controller
             data = _rowFilteringService.TermMinByInterval(tableRowViewModel.TermMinMinimumValue,
                 tableRowViewModel.TermMinMaximumValue, data).ToList();
         }
-        
+
         if (tableRowViewModel.TermMaxFiltering != BaseFilteringParameters.None)
         {
             if (tableRowViewModel.TermMaxFiltering == BaseFilteringParameters.IsNull)
@@ -146,13 +151,13 @@ public class HomeController : Controller
                 data = _rowFilteringService.TermMaxIsNotNull(data).ToList();
             }
         }
-        
+
         if (tableRowViewModel.TermMaxMinimumValue != null || tableRowViewModel.TermMaxMaximumValue != null)
         {
             data = _rowFilteringService.TermMaxByInterval(tableRowViewModel.TermMaxMinimumValue,
                 tableRowViewModel.TermMaxMaximumValue, data).ToList();
         }
-        
+
         if (tableRowViewModel.RateMinFiltering != BaseFilteringParameters.None)
         {
             if (tableRowViewModel.RateMinFiltering == BaseFilteringParameters.IsNull)
@@ -164,13 +169,13 @@ public class HomeController : Controller
                 data = _rowFilteringService.RateMinIsNotNull(data).ToList();
             }
         }
-        
+
         if (tableRowViewModel.RateMinMinimumValue != null || tableRowViewModel.RateMinMaximumValue != null)
         {
             data = _rowFilteringService.RateMinByInterval(tableRowViewModel.RateMinMinimumValue,
                 tableRowViewModel.RateMinMaximumValue, data).ToList();
         }
-        
+
         if (tableRowViewModel.RateMaxFiltering != BaseFilteringParameters.None)
         {
             if (tableRowViewModel.RateMaxFiltering == BaseFilteringParameters.IsNull)
@@ -182,13 +187,13 @@ public class HomeController : Controller
                 data = _rowFilteringService.RateMaxIsNotNull(data).ToList();
             }
         }
-        
+
         if (tableRowViewModel.RateMaxMinimumValue != null || tableRowViewModel.RateMaxMaximumValue != null)
         {
             data = _rowFilteringService.TermMaxByInterval(tableRowViewModel.RateMaxMinimumValue,
                 tableRowViewModel.RateMaxMaximumValue, data).ToList();
         }
-        
+
         if (tableRowViewModel.NoteFiltering != BaseFilteringParameters.None)
         {
             if (tableRowViewModel.NoteFiltering == BaseFilteringParameters.IsNull)
@@ -212,18 +217,18 @@ public class HomeController : Controller
                 data = _rowFilteringService.Period("год", data).ToList();
             }
         }
-        
+
         if (!string.IsNullOrEmpty(tableRowViewModel.KeywordSearch))
         {
             data = _rowFilteringService.KeywordSearch(tableRowViewModel.KeywordSearch, data).ToList();
         }
 
         tableRowViewModel.TableRows = data;
-        
+
         ViewData["Title"] = tableName;
         return CheckForDataValid(tableRowViewModel);
     }
-    
+
     public async Task<IActionResult> GetBuildingTable(string filePath)
     {
         var tableName = "Строительство ";
@@ -266,10 +271,10 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel,string tableName)
+    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel, string tableName)
     {
         Parser.Parser parser = new Parser.Parser(tableRowViewModel.FilePath, 9);
-        parser.SaveChanges(tableRowViewModel.TableRows,tableName,_rellevantLineInTables[tableName]);
+        parser.SaveChanges(tableRowViewModel.TableRows, tableName, _rellevantLineInTables[tableName]);
         return View("Download", tableRowViewModel.FilePath);
     }
 
@@ -319,18 +324,23 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Statistics(string filePath,string tableName,bool isForAll)
+    public async Task<IActionResult> Statistics(string filePath, string tableName, bool isForAll)
     {
         if (isForAll)
         {
             List<TableStatisticsViewModel> statisticsViewModels = new();
             foreach (var name in _rellevantLineInTables.Keys)
             {
-                statisticsViewModels.Add(GetStatistics(filePath,name));
+                statisticsViewModels.Add(GetStatistics(filePath, name));
             }
-            return View("Statistics", new TableRowViewModel() { Statistics =statisticsViewModels, FilePath = filePath });
+
+            return View("Statistics",
+                new TableRowViewModel() { Statistics = statisticsViewModels, FilePath = filePath });
         }
-        var statistics = GetStatistics(filePath,tableName);
-        return View("Statistics", new TableRowViewModel() { Statistics = new List<TableStatisticsViewModel>(){statistics}, FilePath = filePath });
+
+        var statistics = GetStatistics(filePath, tableName);
+        return View("Statistics",
+            new TableRowViewModel()
+                { Statistics = new List<TableStatisticsViewModel>() { statistics }, FilePath = filePath });
     }
 }

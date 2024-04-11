@@ -5,6 +5,7 @@
         .GroupBy(row => row.BankName)
         .Select(group => group.ToList())
         .ToList();
+    var rowIndex = 0;
 }
 
 <body>
@@ -34,8 +35,9 @@
                    <tbody class="align-middle">
                        @foreach (var tableRow in tableRows)
                        {
+                           @rowIndex = Model.TableRows.IndexOf(tableRow);
                            <tr>
-                               <td><input asp-for="TableRows" value="@(tableRow.CreditProduct != null ? tableRow.CreditProduct : "")"/></td>
+                               <td><input asp-for="@Model.TableRows" value="@(tableRow.CreditProduct != null ? tableRow.CreditProduct : "")"/></td>
                                <td><input asp-for="TableRows" type="number" value="@(tableRow.TermMin != null ? tableRow.TermMin.ToString() : "")"/></td>
                                <td><input asp-for="TableRows" type="number" value="@(tableRow.TermMax != null ? tableRow.TermMax.ToString() : "")"/></td>
                                <td><input asp-for="TableRows" type="text" value="@(tableRow.Period != null ? tableRow.Period : "")"/></td>
