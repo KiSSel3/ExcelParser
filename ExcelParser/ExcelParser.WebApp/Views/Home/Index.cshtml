@@ -3,19 +3,26 @@
     Layout = "_Layout";
 }
 
-<!-- Image and text -->
-<h2>Выберите файл для открытия</h2>
- <a href="@Url.Action("UploadComparingTables","Home")"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Выбрать файлы для сравнения</button></a>
-<form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
-    <div class="input-group" style="text-align: center;">
-        <input type="file" id="fileInput" name="file" style="display: none;" onchange="document.getElementById('uploadForm').submit();" />
-        <span class="input-group-btn">
-            <button class="btn btn-secondary" type="button" id="uploadButton" style="border: none; background-color: transparent; padding: 0;align-content: center">
-                <img src="img/upload.jpg" alt="Upload" width="300" height="250" class="image-center"/>
-            </button>
-        </span>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="text-center">
+        <h2>Выберите файл для открытия</h2>
+        <a href="@Url.Action("UploadComparingTables","Home")" class="btn btn-primary" style="border-radius: 12px">Выбрать файлы для сравнения</a>
+        
+        <!-- Обернуть форму в блок с классом text-center для центрирования -->
+        <div class="text-center mt-3">
+            <form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
+                <input type="file" id="fileInput" name="file" style="display: none;" onchange="document.getElementById('uploadForm').submit();" />
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="uploadButton" style="border: none; background-color: transparent; padding: 0;">
+                        <img src="img/upload.jpg" alt="Upload" width="300" height="250" class="image-center"/>
+                    </button>
+                </span>
+            </form>
+        </div>
     </div>
-</form>
+</div>
+
+
 
 @section Scripts{
     <script>
