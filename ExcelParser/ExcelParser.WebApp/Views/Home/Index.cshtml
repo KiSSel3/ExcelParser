@@ -5,6 +5,7 @@
 
 <!-- Image and text -->
 <h2>Выберите файл для открытия</h2>
+ <a href="@Url.Action("UploadComparingTables","Home")"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Выбрать файлы для сравнения</button></a>
 <form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
     <div class="input-group" style="text-align: center;">
         <input type="file" id="fileInput" name="file" style="display: none;" onchange="document.getElementById('uploadForm').submit();" />
