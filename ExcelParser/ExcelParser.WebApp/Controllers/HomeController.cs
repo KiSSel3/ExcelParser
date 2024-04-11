@@ -82,7 +82,7 @@ public class HomeController : Controller
     {
         if (dataModel.TableRows == null)
         {
-            return View("Error", new ErrorViewModel() { RequestId = "Данных нет" });
+            return View("Error", "Данных нет");
         }
 
         return View("Table", dataModel);
@@ -108,7 +108,7 @@ public class HomeController : Controller
         }
         catch (Exception exception)
         {
-            return View("Error", new ErrorViewModel() { RequestId = exception.Message });
+            return View("Error",exception.Message);
         }
     }
 
@@ -307,7 +307,7 @@ public class HomeController : Controller
         }
         catch (Exception exception)
         {
-            return View("Error", new ErrorViewModel() { RequestId = exception.Message });
+            return View("Error", exception.Message);
         }
     }
 
