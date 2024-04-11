@@ -1,24 +1,20 @@
 ﻿@{
     ViewData["Title"] = "Home";
-    Layout="_Layout";
+    Layout = "_Layout";
 }
 
 <!-- Image and text -->
-    <h2>Выбирете файл для открытия</h2>
-    <a href="@Url.Action("UploadComparingTables","Home")"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Выбрать файлы для сравнения</button></a>
-    <form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
-        <div class="input-group" style="text-align: center;">
-            <input type="file" id="fileInput" name="file" style="display: none;" />
-            <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button" id="uploadButton" style="border: none; background-color: transparent; padding: 0;align-content: center">
-                    <img src="img/upload.jpg" alt="Upload" width="300" height="250" class="image-center"/>
-                </button>
-            </span>
-        </div>
-        <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Загрузить файл</button>
-    </form>
-
-
+<h2>Выберите файл для открытия</h2>
+<form id="uploadForm" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
+    <div class="input-group" style="text-align: center;">
+        <input type="file" id="fileInput" name="file" style="display: none;" onchange="document.getElementById('uploadForm').submit();" />
+        <span class="input-group-btn">
+            <button class="btn btn-secondary" type="button" id="uploadButton" style="border: none; background-color: transparent; padding: 0;align-content: center">
+                <img src="img/upload.jpg" alt="Upload" width="300" height="250" class="image-center"/>
+            </button>
+        </span>
+    </div>
+</form>
 
 @section Scripts{
     <script>

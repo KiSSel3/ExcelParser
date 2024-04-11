@@ -1,19 +1,19 @@
-@model TableRowViewModel
+@model ExcelParser.WebApp.Models.TableRowViewModel
 @{
-    Layout = "_TableLayout";
-    List<List<ExcelParser.Parser.Models.TableRow>> groupedRows = Model.TableRows
-        .GroupBy(row => row.BankName)
-        .Select(group => group.ToList())
-        .ToList();
-    var rowIndex = 0;
+Layout = "_TableLayout";
+List<List<ExcelParser.Parser.Models.TableRow>> groupedRows = Model.TableRows
+.GroupBy(row => row.BankName)
+.Select(group => group.ToList())
+.ToList();
+var rowIndex = 0;
 }
 
 <body>
-<a href="@Url.Action("Home", "Home", new { filePath = Model.FilePath })"><button type="button"style="border-radius: 12px; align-content: center" class="btn btn-primary">Главная</button></a>
+<a href="@Url.Action("Home", "Home", new { filePath = Model.FilePath })"><button type="button" style="border-radius: 12px; align-content: center" class="btn btn-primary">Главная</button></a>
 <form method="post" asp-controller="Home" asp-action="UpdateTable">
     <button type="submit" class="btn-primary">Сохранить</button>
-    <input type="hidden" asp-for="@Model.FilePath" value="@Model.FilePath"/>
-    <input type="hidden" name="tableName" value="@ViewData["Title"]"/>
+    <input type="hidden" name="tableRowViewModel.FilePath" value="@Model.FilePath" />
+    <input type="hidden" name="tableName" value="@ViewData["Title"]" />
     <div class="row px-xl-5">
         <div class="col-lg-12 table-responsive mb-5">
             @foreach (var tableRows in groupedRows)
@@ -22,36 +22,35 @@
                 <h3>Банк : @tableRows[0].BankName</h3>
                 <table id="cartTable" class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
-                    <tr>
-                        <th>Кредитный продукт</th>
-                        <th>Срок min</th>
-                        <th>Срок max</th>
-                        <th>Период</th>
-                        <th>Ставка min</th>
-                        <th>Ставка max</th>
-                        <th>Примечание</th>
-                    </tr>
+                        <tr>
+                            <th>Кредитный продукт</th>
+                            <th>Срок min</th>
+                            <th>Срок max</th>
+                            <th>Период</th>
+                            <th>Ставка min</th>
+                            <th>Ставка max</th>
+                            <th>Примечание</th>
+                        </tr>
                     </thead>
-                   <tbody class="align-middle">
-                       @foreach (var tableRow in tableRows)
-                       {
-                           @rowIndex = Model.TableRows.IndexOf(tableRow);
-                           <tr>
-                               <td><input asp-for="@Model.TableRows" value="@(tableRow.CreditProduct != null ? tableRow.CreditProduct : "")"/></td>
-                               <td><input asp-for="TableRows" type="number" value="@(tableRow.TermMin != null ? tableRow.TermMin.ToString() : "")"/></td>
-                               <td><input asp-for="TableRows" type="number" value="@(tableRow.TermMax != null ? tableRow.TermMax.ToString() : "")"/></td>
-                               <td><input asp-for="TableRows" type="text" value="@(tableRow.Period != null ? tableRow.Period : "")"/></td>
-                               <td><input asp-for="TableRows" type="text" value="@(tableRow.RateMin != null ? tableRow.RateMin.ValueString : "")"/></td>
-                               <td><input asp-for="TableRows" type="text" value="@(tableRow.RateMax != null ? tableRow.RateMax.ValueString : "")"/></td>
-                               <td><input asp-for="TableRows" type="text" value="@(tableRow.Note != null ? tableRow.Note : "")"/></td>
-                           </tr>
-                       }
-                   </tbody>
-
+                    <tbody class="align-middle">
+                        @foreach (var tableRow in tableRows)
+                        {
+                            rowIndex = Model.TableRows.IndexOf(tableRow);
+                            <tr>
+                                <td><input name="TableRows[@rowIndex].CreditProduct" value="@(tableRow.CreditProduct ?? "")" /></td>
+                                <td><input name="TableRows[@rowIndex].TermMin" type="number" value="@(tableRow.TermMin ?? 0)" /></td>
+                                <td><input name="TableRows[@rowIndex].TermMax" type="number" value="@(tableRow.TermMax ?? 0)" /></td>
+                                <td><input name="TableRows[@rowIndex].Period" type="text" value="@(tableRow.Period ?? "")" /></td>
+                                <td><input name="TableRows[@rowIndex].RateMin.ValueString" type="text" value="@(tableRow.RateMin?.ValueString ?? "")" /></td>
+                                <td><input name="TableRows[@rowIndex].RateMax.ValueString" type="text" value="@(tableRow.RateMax?.ValueString ?? "")" /></td>
+                                <td><input name="TableRows[@rowIndex].Note" type="text" value="@(tableRow.Note ?? "")" /></td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             }
         </div>
     </div>
-
 </form>
+
 </body>
