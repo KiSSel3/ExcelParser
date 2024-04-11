@@ -70,9 +70,17 @@ public class HomeController : Controller
 
     public IActionResult DownloadExcelFile(string filePath)
     {
-        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-        string fileName = Path.GetFileName(filePath);
-        return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        try
+        {
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            string fileName = Path.GetFileName(filePath);
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+        catch (Exception e)
+        {
+            return View("Error", e.Message);
+        }
+        
     }
 
     private TableRowViewModel GetTableRowsByTableName(string tableName, string filePath, int firstRelevantLine)
@@ -86,7 +94,7 @@ public class HomeController : Controller
     {
         if (dataModel.TableRows == null)
         {
-            return View("Error", new ErrorViewModel() { RequestId = "Данных нет" });
+            return View("Error", "Данных нет");
         }
 
         return View("Table", dataModel);
@@ -112,7 +120,7 @@ public class HomeController : Controller
         }
         catch (Exception exception)
         {
-            return View("Error", new ErrorViewModel() { RequestId = exception.Message });
+            return View("Error", exception.Message);
         }
     }
 
@@ -273,9 +281,17 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel, string tableName)
     {
-        Parser.Parser parser = new Parser.Parser(tableRowViewModel.FilePath, 9);
-        parser.SaveChanges(tableRowViewModel.TableRows, tableName, _rellevantLineInTables[tableName]);
-        return View("Download", tableRowViewModel.FilePath);
+        try
+        {
+            Parser.Parser parser = new Parser.Parser(tableRowViewModel.FilePath, 9);
+            parser.SaveChanges(tableRowViewModel.TableRows, tableName, _rellevantLineInTables[tableName]);
+            return View("Download", tableRowViewModel.FilePath);
+        }
+        catch (Exception exception)
+        {
+            return View("Error", exception.Message );
+        }
+        
     }
 
     [HttpGet]
@@ -296,7 +312,7 @@ public class HomeController : Controller
         }
         catch (Exception exception)
         {
-            return View("Error", new ErrorViewModel() { RequestId = exception.Message });
+            return View("Error", exception.Message );
         }
     }
 
@@ -310,17 +326,25 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> CompareTables(string firstFilePath, string secondFilePath, string tableName)
     {
-        Task<TableRowViewModel> getRowsFromFirstTable =
-            Task.Run(() => GetTableRowsByTableName(tableName, firstFilePath, _rellevantLineInTables[tableName]));
-        Task<TableRowViewModel> getRowsFromSecondTable =
-            Task.Run(() => GetTableRowsByTableName(tableName, secondFilePath, _rellevantLineInTables[tableName]));
-        await Task.WhenAll(getRowsFromFirstTable, getRowsFromSecondTable);
-        var fistTableRows = await getRowsFromFirstTable;
-        var secondTableRows = await getRowsFromSecondTable;
-        var compareResult = _comparisonService.GetComparisonTable(fistTableRows.TableRows, secondTableRows.TableRows);
-        return View("Compare",
-            new CompareFileViewModel()
-                { CompareResult = compareResult, FirstFilePath = firstFilePath, SecondFilePath = secondFilePath });
+        try
+        {
+            Task<TableRowViewModel> getRowsFromFirstTable =
+                Task.Run(() => GetTableRowsByTableName(tableName, firstFilePath, _rellevantLineInTables[tableName]));
+            Task<TableRowViewModel> getRowsFromSecondTable =
+                Task.Run(() => GetTableRowsByTableName(tableName, secondFilePath, _rellevantLineInTables[tableName]));
+            await Task.WhenAll(getRowsFromFirstTable, getRowsFromSecondTable);
+            var fistTableRows = await getRowsFromFirstTable;
+            var secondTableRows = await getRowsFromSecondTable;
+            var compareResult = _comparisonService.GetComparisonTable(fistTableRows.TableRows, secondTableRows.TableRows);
+            return View("Compare",
+                new CompareFileViewModel()
+                    { CompareResult = compareResult, FirstFilePath = firstFilePath, SecondFilePath = secondFilePath });
+        }
+        catch (Exception exception)
+        {
+            return View("Error", exception.Message );
+        }
+        
     }
 
     [HttpGet]
