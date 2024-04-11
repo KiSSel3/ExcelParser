@@ -2,10 +2,11 @@
 
 @{
     Layout = "_MainLayout";
+    string xlsxFilePath = System.IO.Path.ChangeExtension(Model, ".xlsx");
 }
 
 <body>
 <div>
-     <a href="@Url.Action("DownloadExcelFile", "Home", new {filePath=Model})" class="btn btn-primary">Скачать файл</a>  
+     <a href="@Url.Action("DownloadExcelFile", "Home", new { filePath = xlsxFilePath })" class="btn btn-primary">Скачать файл</a>
 </div>
 </body>

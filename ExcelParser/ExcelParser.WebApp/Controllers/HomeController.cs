@@ -262,9 +262,6 @@ public class HomeController : Controller
     {
         var tableRows = GetTableRowsByTableName(tableName, filePath, _rellevantLineInTables[tableName]);
         ViewData["Title"] = tableName;
-    
-        HttpContext.Session.SetString("FilePath", filePath);
-        HttpContext.Session.SetString("TableName", tableName);
         
         foreach (TableRow row in tableRows.TableRows)
         {
@@ -281,19 +278,15 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateTable(List<TableRow> TableRows)
+    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel, string tableName)
     {
-        Console.WriteLine(TableRows.Count);
-        string filePath = HttpContext.Session.GetString("FilePath");
-        Console.WriteLine(filePath);
-        string tableName = HttpContext.Session.GetString("TableName");
-        Console.WriteLine(tableName);
-        HttpContext.Session.Remove("FilePath");
-        HttpContext.Session.Remove("TableName");
+        Parser.Parser parser = new Parser.Parser(tableRowViewModel.FilePath, 9);
+        parser.SaveChanges(tableRowViewModel.TableRows, tableName, _rellevantLineInTables[tableName]);
         
-        Parser.Parser parser = new Parser.Parser(filePath, 9);
-        parser.SaveChanges(TableRows,tableName,_rellevantLineInTables[tableName]);
-        return View("Download", filePath);
+        var xlsxFilePath = Path.ChangeExtension(tableRowViewModel.FilePath, ".xlsx");
+        System.IO.File.Copy(tableRowViewModel.FilePath, xlsxFilePath, true);
+        
+        return View("Download", xlsxFilePath);
     }
 
     [HttpGet]

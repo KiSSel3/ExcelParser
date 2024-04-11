@@ -1,16 +1,14 @@
 @model TableRowViewModel
 @{
     Layout = "_TableLayout";
-    /*List<List<ExcelParser.Parser.Models.TableRow>> groupedRows = Model.TableRows
-        .GroupBy(row => row.BankName)
-        .Select(group => group.ToList())
-        .ToList();*/
 }
 
 <body>
 <a href="@Url.Action("Home", "Home", new { filePath = Model.FilePath })"><button type="button"style="border-radius: 12px; align-content: center" class="btn btn-primary">Главная</button></a>
 <form method="post" asp-controller="Home" asp-action="UpdateTable">
     <button type="submit" class="btn-primary">Сохранить</button>
+        <input type="hidden" name="tableRowViewModel.FilePath" value="@Model.FilePath" />
+        <input type="hidden" name="tableName" value="@ViewData["Title"]" />
     <div class="row px-xl-5">
         <div class="col-lg-12 table-responsive mb-5">
             <table id="cartTable" class="table table-bordered text-center mb-0">
@@ -31,24 +29,21 @@
                 @for (int row = 0; row < @Model.TableRows.Count; ++row)
                 {
                     <tr>
-                        <td><p>@Model.TableRows[row].Id</p><input type="hidden" name="TableRows[@row].Id" value="@Model.TableRows[row].Id"/></td>
-                        <td><p>@Model.TableRows[row].BankName</p><input type="hidden" namer="TableRows[@row].BankName" value="@Model.TableRows[row].BankName"/></td>
-                        <td><input name="TableRows[@row].CreditProduct" value="@Model.TableRows[row].CreditProduct"/></td>
-                        <td><input name="TableRows[@row].TermMin" type="number" value="@Model.TableRows[row].TermMin"/></td>
-                        <td><input name="TableRows[@row].TermMax" type="number" value="@Model.TableRows[row].TermMax"/></td>
-                        <td><input name="TableRows[@row].Period" type="text" value="@Model.TableRows[row].Period"/></td>
-                        <td><input name="TableRows[@row].RateMin.ValueString" type="text" value="@Model.TableRows[row].RateMin.ValueString"/></td>
-                        <td><input name="TableRows[@row].RateMax.ValueString" type="text" value="@Model.TableRows[row].RateMax.ValueString"/></td>
-                        <td><input name="TableRows[@row].Note" type="text" value="@Model.TableRows[row].Note"/></td>
+                        <td><p>@Model.TableRows[row].Id</p><input type="hidden" name="tableRowViewModel.TableRows[@row].Id" value="@Model.TableRows[row].Id"/></td>
+                        <td><p>@Model.TableRows[row].BankName</p><input type="hidden" namer="tableRowViewModel.TableRows[@row].BankName" value="@Model.TableRows[row].BankName"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].CreditProduct" value="@Model.TableRows[row].CreditProduct"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].TermMin" type="number" value="@Model.TableRows[row].TermMin"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].TermMax" type="number" value="@Model.TableRows[row].TermMax"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].Period" type="text" value="@Model.TableRows[row].Period"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].RateMin.ValueString" type="text" value="@Model.TableRows[row].RateMin.ValueString"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].RateMax.ValueString" type="text" value="@Model.TableRows[row].RateMax.ValueString"/></td>
+                        <td><input name="tableRowViewModel.TableRows[@row].Note" type="text" value="@Model.TableRows[row].Note"/></td>
                     </tr>
                 }
                 </tbody>
             </table>
         </div>
     </div>
-    @*<input type="hidden" name="filePath" value="@Model.FilePath"/>
-    <input type="hidden" name="tableName" value="@ViewData["Title"]"/>*@
-    
 </form>
 
 </body>
