@@ -1,0 +1,11 @@
+@model string
+
+@{
+    Layout = "_MainLayout";
+}
+
+<body>
+<div>
+     <a href="@Url.Action("DownloadExcelFile", "Home", new {filePath=Model})" class="btn btn-primary">Скачать файл</a>  
+</div>
+</body>

@@ -8,9 +8,11 @@
 }
 
 <body>
-<a href="@Url.Action("Home","Home",new {filePath=Model.FilePath})"><button  type="button"style="border-radius: 12px" class="btn btn-primary">Главная</button></a>
+<a href="@Url.Action("Home", "Home", new { filePath = Model.FilePath })"><button type="button"style="border-radius: 12px; align-content: center" class="btn btn-primary">Главная</button></a>
 <form method="post" asp-controller="Home" asp-action="UpdateTable">
-    <input type="hidden" name="filePath" value="@Model.FilePath"/>
+    <button type="submit" class="btn-primary">Сохранить</button>
+    <input type="hidden" asp-for="@Model.FilePath" value="@Model.FilePath"/>
+    <input type="hidden" name="tableName" value="@ViewData["Title"]"/>
     <div class="row px-xl-5">
         <div class="col-lg-12 table-responsive mb-5">
             @foreach (var tableRows in groupedRows)
@@ -29,24 +31,25 @@
                         <th>Примечание</th>
                     </tr>
                     </thead>
-                    <tbody class="align-middle">
-                    @foreach (var tableRow in tableRows)
-                    {
-                        <tr>
-                            <td><input type="text" name="creditProduct" value="@(tableRow.CreditProduct != null ? tableRow.CreditProduct : "")"/></td>
-                            <td><input type="number" name="termMin" value="@(tableRow.TermMin != null ? tableRow.TermMin.ToString() : "")"/></td>
-                            <td><input type="number" name="termMax" value="@(tableRow.TermMax != null ? tableRow.TermMax.ToString() : "")"/></td>
-                            <td><input type="text" name="period" value="@(tableRow.Period != null ? tableRow.Period : "")"/></td>
-                            <td><input type="text" name="rateMin" value="@(tableRow.RateMin != null ? tableRow.RateMin.ValueString : "")"/></td>
-                            <td><input type="text" name="rateMax" value="@(tableRow.RateMax != null ? tableRow.RateMax.ValueString : "")"/></td>
-                            <td><input type="text" name="note" value="@(tableRow.Note != null ? tableRow.Note : "")"/></td>
-                        </tr>
-                    }
-                    </tbody>
+                   <tbody class="align-middle">
+                       @foreach (var tableRow in tableRows)
+                       {
+                           <tr>
+                               <td><input asp-for="TableRows" value="@(tableRow.CreditProduct != null ? tableRow.CreditProduct : "")"/></td>
+                               <td><input asp-for="TableRows" type="number" value="@(tableRow.TermMin != null ? tableRow.TermMin.ToString() : "")"/></td>
+                               <td><input asp-for="TableRows" type="number" value="@(tableRow.TermMax != null ? tableRow.TermMax.ToString() : "")"/></td>
+                               <td><input asp-for="TableRows" type="text" value="@(tableRow.Period != null ? tableRow.Period : "")"/></td>
+                               <td><input asp-for="TableRows" type="text" value="@(tableRow.RateMin != null ? tableRow.RateMin.ValueString : "")"/></td>
+                               <td><input asp-for="TableRows" type="text" value="@(tableRow.RateMax != null ? tableRow.RateMax.ValueString : "")"/></td>
+                               <td><input asp-for="TableRows" type="text" value="@(tableRow.Note != null ? tableRow.Note : "")"/></td>
+                           </tr>
+                       }
+                   </tbody>
+
                 </table>
             }
         </div>
     </div>
-    <button type="submit">Сохранить</button>
+
 </form>
 </body>

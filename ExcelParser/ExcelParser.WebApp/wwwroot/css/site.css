@@ -115,3 +115,6 @@ body {
 .td-statistic-high{
   width: 250px;
 }
+.custom-offset-left {
+  margin-left: -20px; /* На сколько вы хотите сместить влево */
+}

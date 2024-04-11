@@ -3,6 +3,7 @@ using ExcelParser.Service.Interfaces;
 using ExcelParser.WebApp.Enums;
 using Microsoft.AspNetCore.Mvc;
 using ExcelParser.WebApp.Models;
+using OfficeOpenXml.Style.Table;
 
 namespace ExcelParser.WebApp.Controllers;
 
@@ -62,6 +63,12 @@ public class HomeController : Controller
         }
 
         return filePath;
+    }
+    public IActionResult DownloadExcelFile(string filePath)
+    {
+        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+        string fileName = Path.GetFileName(filePath);
+        return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
     }
 
     private TableRowViewModel GetTableRowsByTableName(string tableName, string filePath, int firstRelevantLine)
@@ -254,17 +261,16 @@ public class HomeController : Controller
     public async Task<IActionResult> UpdateTable(string filePath, string tableName)
     {
         var tableRows = GetTableRowsByTableName(tableName, filePath, _rellevantLineInTables[tableName]);
+        ViewData["Title"] = tableName;
         return View("EditTable", tableRows);
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel)
+    public async Task<IActionResult> UpdateTable(TableRowViewModel tableRowViewModel,string tableName)
     {
-        
-        
-        return View("Home",
-            new TableRowViewModel()
-                { FilePath = tableRowViewModel.FilePath});
+        Parser.Parser parser = new Parser.Parser(tableRowViewModel.FilePath, 9);
+        parser.SaveChanges(tableRowViewModel.TableRows,tableName,_rellevantLineInTables[tableName]);
+        return View("Download", tableRowViewModel.FilePath);
     }
 
     [HttpGet]
